@@ -24,11 +24,27 @@ class TranslatorHandler(object):
         :returns: Nothing. But replaces the current or selected lines.
 
         """
-        source = args[0]
-        target = args[1]
+        if len(args) is 2:
+            source = args[0]
+            target = args[1]
+        elif len(args) is 1:
+            source = "auto"
+            # TODO: Let user specify defaults.
+            target = "EN"
+        elif len(args) is 0:
+            # TODO: Let user specify defaults.
+            source = "DE"
+            target = "EN"
+        else:
+            self.print_error_in_vim("TranslateLine takes either 0 or 2 arguments")
+            self.print_error_in_vim("TranslateLine [[<source>] <target>]")
+            return
         lines = self._vim.current.buffer[nvim_range[0]-1 : nvim_range[1]]
         translated_lines = [self.translate(source, target, line) for line in lines]
         self._vim.current.buffer[nvim_range[0]-1 : nvim_range[1]] = translated_lines
+
+    def print_error_in_vim(self, msg):
+        self._vim.command("echohl Error | echomsg '[translator]: " + msg + "' | echohl None")
 
     def translate(self, source, target, string):
         """Translates the string from source to target language.
