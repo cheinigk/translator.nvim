@@ -5,7 +5,7 @@
 "=============================================================================
 
 " rplugin.vim may not be loaded on VimEnter
-if !exists('g:loaded_remote_plugins')
-    runtime! plugin/rplugin.vim
-endif
-call _translator_init()
+" if !exists('g:loaded_remote_plugins')
+"     runtime! plugin/rplugin.vim
+" endif
+" call _translator_init()

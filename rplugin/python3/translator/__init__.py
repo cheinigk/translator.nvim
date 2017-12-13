@@ -15,10 +15,10 @@ class TranslatorHandler(object):
         """
         self._vim = vim
 
-    @neovim.function('_translator_init', sync=False)
-    def init_translator(self, args):
-        self.translator = Translator(self._vim)
-
+    # @neovim.function('_translator_init', sync=False)
+    # def init_translator(self, args):
+    #     self.translator = Translator(self._vim)
+    #
     @neovim.command('TranslateLine', range='', nargs='*', sync=True)
     def translate_line(self, args, nvim_range):
         """Translates line-wise.
