@@ -14,6 +14,7 @@ class TranslatorHandler(object):
 
         """
         self._vim = vim
+        self._translator = Translator(vim)
 
     @neovim.command('TranslateLine', range='', nargs='*', sync=True)
     def translate_line(self, args, nvim_range):
@@ -40,23 +41,8 @@ class TranslatorHandler(object):
             self.print_error_in_vim("TranslateLine [[<source>] <target>]")
             return
         lines = self._vim.current.buffer[nvim_range[0]-1 : nvim_range[1]]
-        translated_lines = [self.translate(source, target, line) for line in lines]
+        translated_lines = lines.map(TranslatorMonad).map(lambda tm: tm.translate(source, target).result())
         self._vim.current.buffer[nvim_range[0]-1 : nvim_range[1]] = translated_lines
 
     def print_error_in_vim(self, msg):
         self._vim.command("echohl Error | echomsg '[translator]: " + msg + "' | echohl None")
-
-    def translate(self, source, target, string):
-        """Translates the string from source to target language.
-
-        :source: Source language identifier.
-        :target: Target language identifier.
-        :string: The string to translate.
-        :returns: The translated string or -1.
-
-        """
-        from subprocess import run
-        from subprocess import PIPE
-
-        completed_process = run(["deepl", "-s", source, "-t", target, "translate", string], stdout=PIPE, encoding="utf-8")
-        return completed_process.stdout.strip()
