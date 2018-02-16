@@ -1,5 +1,5 @@
 translator.nvim uses deepl to translate text within neovim.
-Copyright © 2017 Christian Bauer
+Copyright © 2017-2018 Christian Bauer
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the "Software"),
